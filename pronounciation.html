@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pronunciation Practice - Tongue Twisters</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+            color: #333;
+        }
+        
+        html {
+            height: 100%;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+        }
+
+        .practice-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .twister-section {
+            margin-bottom: 2rem;
+        }
+
+        .twister-text {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .record-btn, .stop-btn, .rerecord-btn {
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 150px;
+            justify-content: center;
+        }
+
+        .record-btn {
+            background: #e74c3c;
+        }
+
+        .record-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .record-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stop-btn {
+            background: #34495e;
+        }
+
+        .stop-btn:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+        }
+
+        .rerecord-btn {
+            background: #f39c12;
+        }
+
+        .rerecord-btn:hover {
+            background: #e67e22;
+            transform: translateY(-2px);
+        }
+
+        .recording-indicator {
+            background: #27ae60;
+            animation: recordingPulse 1.5s infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recording-indicator::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: recordingShimmer 2s infinite;
+        }
+
+        @keyframes recordingPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); }
+            50% { transform: scale(1.05); }
+            70% { box-shadow: 0 0 0 10px rgba(39, 174, 96, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(39, 174, 96, 0); }
+        }
+
+        @keyframes recordingShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .recording-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.1rem;
+            background: rgba(39, 174, 96, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid #27ae60;
+            margin-bottom: 1rem;
+        }
+
+        .recording-dot {
+            width: 12px;
+            height: 12px;
+            background: #e74c3c;
+            border-radius: 50%;
+            animation: recordingBlink 1s infinite;
+        }
+
+        @keyframes recordingBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
+        }
+
+        .audio-playback {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            border: 2px solid #3498db;
+        }
+
+        .audio-playback h4 {
+            margin: 0 0 1rem 0;
+            color: #2c3e50;
+        }
+
+        .audio-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .play-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .play-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .play-btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .audio-duration {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .attempts-counter {
+            background: #3498db;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .next-twister-btn {
+            background: #9b59b6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .next-twister-btn:hover {
+            background: #8e44ad;
+        }
+
+        .results-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .results-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .transcription {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            min-height: 60px;
+            border: 2px dashed #bdc3c7;
+        }
+
+        .comparison {
+            background: #ffffff;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #e1e8ed;
+        }
+
+        .correct-word {
+            color: #27ae60;
+            font-weight: bold;
+            background: rgba(39, 174, 96, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .incorrect-word {
+            color: #e74c3c;
+            font-weight: bold;
+            background: rgba(231, 76, 60, 0.1);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .accuracy-score {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .status-recording {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+            border: 1px solid #27ae60;
+        }
+
+        .status-processing {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .practice-card {
+                padding: 1.5rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗣️ Pronunciation Practice</h1>
+            <p>Practice your pronunciation with tongue twisters and get instant feedback!</p>
+        </div>
+
+        <div class="practice-card">
+            <div class="twister-section">
+                <div class="twister-text" id="twisterText">
+                    "She sells seashells by the seashore. The shells she sells are surely seashells."
+                </div>
+            </div>
+
+            <div class="controls">
+                <button class="record-btn" id="recordBtn">
+                    🎤 Start Recording
+                </button>
+                <button class="stop-btn" id="stopBtn" style="display: none;">
+                    ⏹️ Stop Recording
+                </button>
+                <button class="rerecord-btn" id="rerecordBtn" style="display: none;">
+                    🔄 Re-record
+                </button>
+                <div class="attempts-counter">
+                    Attempts: <span id="attemptCount">0</span>/3
+                </div>
+                <button class="next-twister-btn" id="nextTwisterBtn">
+                    Next Twister →
+                </button>
+            </div>
+
+            <div class="recording-status" id="recordingStatus" style="display: none;">
+                <div class="recording-dot"></div>
+                <span>Recording in progress... Speak clearly!</span>
+            </div>
+
+            <div class="audio-playback" id="audioPlayback" style="display: none;">
+                <h4>🎵 Your Recorded Audio</h4>
+                <div class="audio-controls">
+                    <button class="play-btn" id="playBtn">
+                        ▶️ Play Recording
+                    </button>
+                    <div class="audio-duration" id="audioDuration">Duration: 0:00</div>
+                </div>
+                <audio id="audioPlayer" style="display: none;"></audio>
+            </div>
+
+            <div id="statusMessage" class="status-message" style="display: none;"></div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-title">📝 Your Recording Results:</div>
+                
+                <div class="transcription">
+                    <strong>What you said:</strong>
+                    <div id="transcriptionResult">Your transcription will appear here...</div>
+                </div>
+
+                <div class="comparison">
+                    <strong>Comparison with original:</strong>
+                    <div id="comparisonResult">Word-by-word comparison will appear here...</div>
+                </div>
+
+                <div class="accuracy-score" id="accuracyScore">
+                    Accuracy: 0%
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tongue twister database
+        // const tongueTwisters = [
+        //     "She sells seashells by the seashore. The shells she sells are surely seashells.",
+        //     "Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked.",
+        //     "How much wood would a woodchuck chuck if a woodchuck could chuck wood?",
+        //     "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair. Fuzzy Wuzzy wasn't fuzzy, was he?",
+        //     "Red lorry, yellow lorry, red lorry, yellow lorry.",
+        //     "Six sick slick slim sycamore saplings.",
+        //     "The thirty-three thieves thought that they thrilled the throne throughout Thursday.",
+        //     "Betty Botter bought some butter, but she said the butter's bitter.",
+        //     "A proper copper coffee pot's a proper copper coffee pot.",
+        //     "Toy boat, toy boat, toy boat, toy boat, toy boat."
+        // ];
+
+        const tongueTwisters = [
+    "She sells seashells by the seashore.",
+    "Peter Piper picked a peck of pickled peppers.",
+    "How much wood would a woodchuck chuck if a woodchuck could chuck wood?",
+    "I scream, you scream, we all scream for ice cream.",
+    "Fuzzy Wuzzy was a bear. Fuzzy Wuzzy had no hair.",
+    "Can you can a can as a canner can can a can?",
+    "I saw Susie sitting in a shoeshine shop.",
+    "Six slippery snails slid slowly seaward.",
+    "Red lorry, yellow lorry, red lorry, yellow lorry.",
+    "The big black bug bit the big black bear.",
+    "A black bug bleeds black blood, what color blood does a blue bug bleed?",
+    "Which wristwatches are Swiss wristwatches?",
+    "I wish to wish the wish you wish to wish.",
+    "How can a clam cram in a clean cream can?",
+    "Six sticky skeletons.",
+    "Six sleek swans swam swiftly southwards.",
+    "Fred fed Ted bread, and Ted fed Fred bread.",
+    "A proper copper coffee pot.",
+    "He threw three free throws.",
+    "I saw a kitten eating chicken in the kitchen.",
+    "If a dog chews shoes, whose shoes does he choose?",
+    "We surely shall see the sun shine soon.",
+    "Which witch is which?",
+    "I slit the sheet, the sheet I slit, and on the slitted sheet I sit.",
+    "Tom threw Tim three thumbtacks.",
+    "Nine nice night nurses nursing nicely.",
+    "Give papa a cup of proper coffee in a copper coffee cup.",
+    "If Stu chews shoes, should Stu choose the shoes he chews?",
+    "Truly rural, truly rural, truly rural.",
+    "I thought a thought. But the thought I thought wasn't the thought I thought I thought.",
+    "A box of biscuits, a batch of mixed biscuits.",
+    "He sees cheese.",
+    "Six shining cities, six shining cities.",
+    "Cooks cook cupcakes quickly.",
+    "A big black bug bit a big black dog on his big black nose!",
+    "The thirty-three thieves thought that they thrilled the throne throughout Thursday.",
+    "Any noise annoys an oyster, but a noisy noise annoys an oyster more.",
+    "If two witches were watching two watches, which witch would watch which watch?",
+    "Can you imagine an imaginary menagerie manager imagining managing an imaginary menagerie?",
+    "Freshly fried flying fish.",
+    "One smart fellow, he felt smart. Two smart fellows, they felt smart. Three smart fellows, they all felt smart.",
+    "Lesser leather never weathered wetter weather better.",
+    "A tutor who tooted the flute tried to tutor two tooters to toot.",
+    "I saw a saw that could out saw any other saw I ever saw.",
+    "Send toast to ten tense stout saints' ten tall tents.",
+    "Which wristwatches are Swiss wristwatches?",
+    "Truly rural, truly rural, truly rural.",
+    "Black background, brown background.",
+    "Ed had edited it.",
+    "A proper copper coffee pot.",
+    "The great Greek grape growers grow great Greek grapes."
+];
+
+        let currentTwisterIndex = Math.floor(Math.random() * tongueTwisters.length);
+        let attemptCount = 0;
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+
+        // DOM elements
+        const twisterText = document.getElementById('twisterText');
+        const recordBtn = document.getElementById('recordBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const rerecordBtn = document.getElementById('rerecordBtn');
+        const nextTwisterBtn = document.getElementById('nextTwisterBtn');
+        const attemptCountEl = document.getElementById('attemptCount');
+        const statusMessage = document.getElementById('statusMessage');
+        const recordingStatus = document.getElementById('recordingStatus');
+        const audioPlayback = document.getElementById('audioPlayback');
+        const playBtn = document.getElementById('playBtn');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const audioDuration = document.getElementById('audioDuration');
+        const resultsSection = document.getElementById('resultsSection');
+        const transcriptionResult = document.getElementById('transcriptionResult');
+        const comparisonResult = document.getElementById('comparisonResult');
+        const accuracyScore = document.getElementById('accuracyScore');
+
+        // Initialize speech recognition
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition;
+        let recordedTranscript = "";
+
+        if (SpeechRecognition) {
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+        }
+
+        // Initialize the page
+        function init() {
+            loadCurrentTwister();
+            setupEventListeners();
+        }
+
+        function loadCurrentTwister() {
+            twisterText.textContent = tongueTwisters[currentTwisterIndex];
+            attemptCount = 0;
+            attemptCountEl.textContent = attemptCount;
+            resultsSection.style.display = 'none';
+            statusMessage.style.display = 'none';
+            recordingStatus.style.display = 'none';
+            audioPlayback.style.display = 'none';
+            
+            // Reset button states
+            recordBtn.style.display = 'flex';
+            recordBtn.disabled = false;
+            recordBtn.textContent = '🎤 Start Recording';
+            recordBtn.classList.remove('recording-indicator');
+            
+            stopBtn.style.display = 'none';
+            rerecordBtn.style.display = 'none';
+        }
+
+        function setupEventListeners() {
+            recordBtn.addEventListener('click', startRecording);
+            stopBtn.addEventListener('click', stopRecording);
+            rerecordBtn.addEventListener('click', rerecord);
+            nextTwisterBtn.addEventListener('click', nextTwister);
+            playBtn.addEventListener('click', toggleAudioPlayback);
+
+            // Audio player event listeners
+            audioPlayer.addEventListener('ended', function() {
+                playBtn.textContent = '▶️ Play Recording';
+            });
+
+            audioPlayer.addEventListener('pause', function() {
+                playBtn.textContent = '▶️ Play Recording';
+            });
+
+            audioPlayer.addEventListener('play', function() {
+                playBtn.textContent = '⏸️ Pause';
+            });
+
+            if (recognition) {
+                recognition.onstart = function() {
+                    recordingStatus.style.display = 'flex';
+                    statusMessage.style.display = 'none';
+                    recordedTranscript = ""; // Reset transcript
+                };
+
+                recognition.onresult = function(event) {
+                    let finalTranscript = "";
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript;
+                        }
+                    }
+                    
+                    if (finalTranscript) {
+                        recordedTranscript += finalTranscript + " ";
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    if (event.error === 'no-speech') {
+                        // Continue recording, user might speak later
+                        return;
+                    }
+                    showStatus('❌ Recording failed. Please try again.', 'status-processing');
+                    resetRecordingState();
+                };
+
+                recognition.onend = function() {
+                    if (isRecording) {
+                        // Restart recognition if still recording
+                        try {
+                            recognition.start();
+                        } catch (error) {
+                            console.log('Recognition restart failed:', error);
+                        }
+                    } else {
+                        // Recording stopped, process the transcript
+                        recordingStatus.style.display = 'none';
+                        processTranscription(recordedTranscript.trim());
+                    }
+                };
+            }
+        }
+
+        async function startRecording() {
+            if (attemptCount >= 3) {
+                alert('You have used all 3 attempts for this tongue twister. Please try the next one!');
+                return;
+            }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                audioChunks = [];
+                mediaRecorder = new MediaRecorder(stream);
+                
+                mediaRecorder.ondataavailable = function(event) {
+                    audioChunks.push(event.data);
+                };
+                
+                mediaRecorder.onstop = function() {
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    
+                    // Set up audio player
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.onloadedmetadata = function() {
+                        const duration = Math.floor(audioPlayer.duration);
+                        const minutes = Math.floor(duration / 60);
+                        const seconds = duration % 60;
+                        audioDuration.textContent = `Duration: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+                    };
+                    
+                    // Show audio playback section
+                    audioPlayback.style.display = 'block';
+                    
+                    // Stop all tracks to release microphone
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
+                isRecording = true;
+                attemptCount++;
+                attemptCountEl.textContent = attemptCount;
+                
+                // Update button visibility and states
+                recordBtn.style.display = 'none';
+                stopBtn.style.display = 'flex';
+                stopBtn.classList.add('recording-indicator');
+                rerecordBtn.style.display = 'none';
+                audioPlayback.style.display = 'none';
+                
+                // Show recording status
+                recordingStatus.style.display = 'flex';
+                
+                mediaRecorder.start();
+                
+                // Start speech recognition simultaneously
+                if (recognition) {
+                    try {
+                        recognition.start();
+                    } catch (error) {
+                        console.error('Speech recognition start error:', error);
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                alert('Could not access microphone. Please allow microphone access and try again.');
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                
+                // Stop speech recognition
+                if (recognition) {
+                    try {
+                        recognition.stop();
+                    } catch (error) {
+                        console.error('Speech recognition stop error:', error);
+                    }
+                }
+                
+                recordingStatus.style.display = 'none';
+                resetRecordingState();
+            }
+        }
+
+        function rerecord() {
+            if (attemptCount >= 3) {
+                alert('You have used all 3 attempts for this tongue twister. Please try the next one!');
+                return;
+            }
+            
+            // Reset results and show record button again
+            resultsSection.style.display = 'none';
+            audioPlayback.style.display = 'none';
+            recordBtn.style.display = 'flex';
+            stopBtn.style.display = 'none';
+            rerecordBtn.style.display = 'none';
+            statusMessage.style.display = 'none';
+        }
+
+        function resetRecordingState() {
+            isRecording = false;
+            
+            // Update button visibility
+            recordBtn.style.display = attemptCount >= 3 ? 'none' : 'flex';
+            stopBtn.style.display = 'none';
+            stopBtn.classList.remove('recording-indicator');
+            rerecordBtn.style.display = attemptCount < 3 ? 'flex' : 'none';
+            
+            if (attemptCount >= 3) {
+                recordBtn.textContent = '🚫 No More Attempts';
+                recordBtn.disabled = true;
+            }
+        }
+
+        function toggleAudioPlayback() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playBtn.textContent = '⏸️ Pause';
+            } else {
+                audioPlayer.pause();
+                playBtn.textContent = '▶️ Play Recording';
+            }
+        }
+
+
+
+        function processTranscription(transcript) {
+            showStatus('🔄 Processing your speech...', 'status-processing');
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                displayResults(transcript);
+                statusMessage.style.display = 'none';
+            }, 1000);
+        }
+
+        function displayResults(userTranscript) {
+            const originalText = tongueTwisters[currentTwisterIndex];
+            
+            // Display transcription or "No speech detected" message
+            if (userTranscript.trim() === "") {
+                transcriptionResult.textContent = "No speech detected";
+                transcriptionResult.style.color = "#e74c3c";
+                transcriptionResult.style.fontStyle = "italic";
+            } else {
+                transcriptionResult.textContent = userTranscript;
+                transcriptionResult.style.color = "#333";
+                transcriptionResult.style.fontStyle = "normal";
+            }
+            
+            // Compare words and create colored comparison
+            const comparison = compareTexts(originalText, userTranscript);
+            comparisonResult.innerHTML = comparison.html;
+            
+            // Calculate and display accuracy
+            const accuracy = Math.round(comparison.accuracy);
+            accuracyScore.textContent = `Accuracy: ${accuracy}%`;
+            
+            // Show results section
+            resultsSection.style.display = 'block';
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function compareTexts(original, spoken) {
+            // Normalize texts for comparison
+            const originalWords = original.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/);
+            const spokenWords = spoken.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/).filter(word => word.length > 0);
+            
+            let correctCount = 0;
+            let totalWords = originalWords.length;
+            let comparisonHTML = '';
+            
+            // If no speech detected, show all words as incorrect
+            if (spokenWords.length === 0) {
+                for (let i = 0; i < originalWords.length; i++) {
+                    comparisonHTML += `<span class="incorrect-word">${originalWords[i]}</span> `;
+                }
+                return {
+                    html: comparisonHTML.trim(),
+                    accuracy: 0
+                };
+            }
+            
+            // Create word-by-word comparison
+            for (let i = 0; i < originalWords.length; i++) {
+                const originalWord = originalWords[i];
+                const spokenWord = spokenWords[i] || '';
+                
+                if (originalWord === spokenWord) {
+                    comparisonHTML += `<span class="correct-word">${originalWord}</span> `;
+                    correctCount++;
+                } else {
+                    comparisonHTML += `<span class="incorrect-word">${originalWord}</span> `;
+                }
+            }
+            
+            const accuracy = totalWords > 0 ? (correctCount / totalWords) * 100 : 0;
+            
+            return {
+                html: comparisonHTML.trim(),
+                accuracy: accuracy
+            };
+        }
+
+        function showStatus(message, className) {
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message ${className}`;
+            statusMessage.style.display = 'block';
+        }
+
+        // function nextTwister() {
+        //     currentTwisterIndex = (currentTwisterIndex + 1) % tongueTwisters.length;
+        //     loadCurrentTwister();
+        // }
+
+        function nextTwister() {
+    // Pick a random index different from the current one
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * tongueTwisters.length);
+    } while (randomIndex === currentTwisterIndex && tongueTwisters.length > 1);
+
+    currentTwisterIndex = randomIndex;
+    loadCurrentTwister();
+}
+
+        // Initialize the application
+        init();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98c80a78b6b6444f',t:'MTc2MDExOTQ3NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
+ 
+

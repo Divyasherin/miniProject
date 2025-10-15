@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Practice - Thanglish</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 40%, #fad0c4 60%, #fbc2eb 100%);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .practice-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 25px;
+      padding: 35px;
+      max-width: 850px;
+      width: 100%;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+      border: 3px solid transparent;
+      background-clip: padding-box;
+      animation: fadeIn 1.5s ease;
+    }
+    h2 {
+      background: linear-gradient(45deg, #ff6a00, #ee0979);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+    }
+    .btn-gradient {
+      border: none;
+      color: white;
+      font-weight: bold;
+      padding: 12px 25px;
+      border-radius: 30px;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    .btn-gradient:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .btn-success { background: linear-gradient(45deg,#00c853,#b2ff59); }
+    .btn-danger { background: linear-gradient(45deg,#d50000,#ff5252); }
+    .btn-primary { background: linear-gradient(45deg,#2979ff,#448aff); }
+    .btn-warning { background: linear-gradient(45deg,#ff9100,#ffc107); }
+    .btn-info { background: linear-gradient(45deg,#00e5ff,#00b0ff); }
+
+    .recording-symbol {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #ff1744;
+      display: none;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    #feedback {
+      display: none;
+      margin-top: 25px;
+      padding: 20px;
+      border-radius: 20px;
+      background: linear-gradient(135deg,#e0f7fa,#f1f8e9);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      border-left: 6px solid #00bfa5;
+    }
+    audio {
+      width: 100%;
+      margin-top: 15px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="practice-card text-center animate_animated animate_fadeInDown">
+    <h2 class="mb-4">🎤 Practice English Speaking</h2>
+
+    <!-- Instructions -->
+    <p id="instructions" class="text-dark animate_animated animate_fadeIn">
+      📌 Read the sentence carefully, understand it, then record your audio. <br>
+      ⏱️ Recording must be <b>minimum 10 seconds</b> and <b>maximum 2 minutes</b>.
+    </p>
+
+    <!-- Paragraph from DB -->
+    <p id="practiceParagraph" class="fs-5 fw-bold text-dark animate_animated animate_fadeInUp">Loading content...</p>
+
+    <!-- Recording Symbol -->
+    <p id="recordingSymbol" class="recording-symbol">🔴 Recording...</p>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-center gap-2 mt-4 flex-wrap">
+      <button id="startBtn" class="btn btn-success btn-gradient">▶ Start</button>
+      <button id="stopBtn" class="btn btn-danger btn-gradient" disabled>⏹ Stop</button>
+      <button id="playBtn" class="btn btn-primary btn-gradient" disabled>🎧 Play</button>
+      <button id="deleteBtn" class="btn btn-warning btn-gradient" disabled>🗑 Delete</button>
+      <button id="uploadBtn" class="btn btn-info btn-gradient" disabled>☁ Upload</button>
+    </div>
+
+    <!-- Audio Player -->
+    <audio id="audioPlayer" controls style="display:none;"></audio>
+
+    <!--Feedback
+    <div id="feedback" class="animate_animated animate_fadeInUp text-start mt-4">
+      <h5 class="text-primary">✅ Your audio Text:</h5>
+      <p id="correctedText" class="text-dark"></p>
+
+      <!--<h5 class="text-success">💡 Suggestions:</h5>
+      <p id="suggestions" class="text-dark"></p> 
+
+      <h5 class="text-danger">📊 Your Score:</h5>
+      <p id="score" class="fs-4 fw-bold text-success"></p>
+    </div>
+  </div> -->
+
+  <!-- <div class="container text-center my-5">
+  <h2 class="mb-4">Practice Paragraph</h2>
+  <p id="practiceParagraph" class="lead fs-5">
+    This is the paragraph you need to read.
+  </p> -->
+
+  <!-- Upload Button -->
+  <!-- <button id="uploadBtn" class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
+    Upload & Check Score
+  </button> -->
+   <!-- Add this below your uploadBtn -->
+  <!-- Score Display -->
+  <div id="scoreDisplay" class="mt-4 fs-2 fw-bold d-none"></div>
+</div>
+
+  <!-- Bootstrap JS -->
+   <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Animate.css for animation -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="practice.js"></script>
+</body>
+</html>

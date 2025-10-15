@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self Introduction Practice - Interview Prep</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100%;
+            color: #333;
+        }
+        
+        html {
+            height: 100%;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            min-height: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-section, .preview-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .input-section h2, .preview-section h2 {
+            color: #667eea;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .template-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .template-btn {
+            background: #f8f9fa;
+            border: 2px solid #e1e8ed;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .template-btn:hover {
+            border-color: #667eea;
+            background: #f0f8ff;
+        }
+
+        .template-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .introduction-preview {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            min-height: 200px;
+        }
+
+        .practice-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .practice-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .practice-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .practice-btn.secondary {
+            background: #28a745;
+        }
+
+        .practice-btn.secondary:hover {
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .timer-section {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timer-btn:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .timer-btn.stop {
+            background: #f44336;
+        }
+
+        .timer-btn.stop:hover {
+            background: #da190b;
+        }
+
+        .tips-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            grid-column: 1 / -1;
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .tip-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #28a745;
+        }
+
+        .tip-card h4 {
+            color: #28a745;
+            margin-bottom: 0.5rem;
+        }
+
+        .placeholder-text {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .input-section, .preview-section {
+                padding: 1.5rem;
+            }
+            
+            .template-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Self Introduction Practice</h1>
+            <p>Fill in your details and practice your perfect self-introduction for interviews</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Input Section -->
+            <div class="input-section">
+                <h2>📝 Your Details</h2>
+                
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="currentRole">Current Role/Status</label>
+                    <input type="text" id="currentRole" placeholder="e.g., Software Developer, Recent Graduate, Marketing Manager">
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Years of Experience</label>
+                    <select id="experience">
+                        <option value="">Select experience level</option>
+                        <option value="Fresh Graduate">Fresh Graduate</option>
+                        <option value="1 year">1 year</option>
+                        <option value="2 years">2 years</option>
+                        <option value="3 years">3 years</option>
+                        <option value="4 years">4 years</option>
+                        <option value="5+ years">5+ years</option>
+                        <option value="10+ years">10+ years</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Current/Previous Company</label>
+                    <input type="text" id="company" placeholder="Company name">
+                </div>
+
+                <div class="form-group">
+                    <label for="skills">Key Skills (3-4 main skills)</label>
+                    <input type="text" id="skills" placeholder="e.g., JavaScript, Team Leadership, Data Analysis">
+                </div>
+
+                <div class="form-group">
+                    <label for="achievement">Major Achievement</label>
+                    <textarea id="achievement" placeholder="Describe a key accomplishment with numbers/results if possible"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="targetRole">Target Role/Position</label>
+                    <input type="text" id="targetRole" placeholder="The position you're applying for">
+                </div>
+
+                <div class="form-group">
+                    <label for="motivation">Why This Role/Company</label>
+                    <textarea id="motivation" placeholder="Why are you interested in this position?"></textarea>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-section">
+                <h2>👁️ Preview & Practice</h2>
+                
+                <div class="template-selector">
+                    <button class="template-btn active" onclick="selectTemplate('professional')">Professional</button>
+                    <button class="template-btn" onclick="selectTemplate('story')">Story-Based</button>
+                    <button class="template-btn" onclick="selectTemplate('achievement')">Achievement-Focused</button>
+                </div>
+
+                <div class="introduction-preview" id="introPreview">
+                    <div class="placeholder-text">
+                        Fill in your details on the left to see your personalized self-introduction here...
+                    </div>
+                </div>
+
+                <div class="practice-controls">
+                    <button class="practice-btn" onclick="copyToClipboard()">
+                        📋 Copy Text
+                    </button>
+                    <button class="practice-btn secondary" onclick="startPracticeTimer()">
+                        ⏱️ Practice Timer
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Timer Section -->
+        <div class="timer-section" id="timerSection">
+            <h3>🎤 Practice Session</h3>
+            <p>Read your introduction aloud. Aim for 60-90 seconds for most interviews.</p>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            <div class="timer-controls">
+                <button class="timer-btn" onclick="startTimer()">Start Timer</button>
+                <button class="timer-btn stop" onclick="stopTimer()">Stop Timer</button>
+                <button class="timer-btn" onclick="resetTimer()">Reset</button>
+            </div>
+            <p id="timerFeedback" style="margin-top: 1rem; font-weight: bold;"></p>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+            <h2>💡 Practice Tips</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h4>🎯 Perfect Timing</h4>
+                    <p>Aim for 60-90 seconds. Practice until you can deliver it naturally within this timeframe.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>🎭 Body Language</h4>
+                    <p>Maintain eye contact, smile genuinely, and use confident posture. Practice in front of a mirror.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>📊 Include Numbers</h4>
+                    <p>Quantify your achievements whenever possible. Numbers make your accomplishments more credible.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>🎪 Show Enthusiasm</h4>
+                    <p>Let your passion for the role shine through. Genuine excitement is contagious and memorable.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>🔄 Practice Variations</h4>
+                    <p>Prepare different versions for different interview types and time constraints.</p>
+                </div>
+                <div class="tip-card">
+                    <h4>📝 Customize Always</h4>
+                    <p>Tailor your introduction for each company and role. Research and personalize your approach.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTemplate = 'professional';
+        let practiceTimer;
+        let seconds = 0;
+
+        // Template structures
+        const templates = {
+            professional: {
+                structure: "Hi, I'm [NAME]. I'm a [CURRENT_ROLE] with [EXPERIENCE] of experience at [COMPANY]. My expertise lies in [SKILLS]. [ACHIEVEMENT]. I'm excited about this [TARGET_ROLE] position because [MOTIVATION]. I believe my background in [SKILLS] makes me a strong fit for your team."
+            },
+            story: {
+                structure: "Hello, I'm [NAME]. My journey in [FIELD] began [EXPERIENCE] ago when [STORY_START]. Currently, I work as a [CURRENT_ROLE] at [COMPANY], where [ACHIEVEMENT]. My passion for [SKILLS] has driven me to [GROWTH]. I'm particularly drawn to this [TARGET_ROLE] opportunity because [MOTIVATION], and I'm excited to bring my experience to contribute to your team's success."
+            },
+            achievement: {
+                structure: "Hi, I'm [NAME], and I'm the [CURRENT_ROLE] who [ACHIEVEMENT]. With [EXPERIENCE] of experience at [COMPANY], I've developed strong skills in [SKILLS]. What excites me most about this [TARGET_ROLE] position is [MOTIVATION]. I'm confident that my proven track record and expertise in [SKILLS] will help drive results for your organization."
+            }
+        };
+
+        // Add event listeners to all input fields
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = ['name', 'currentRole', 'experience', 'company', 'skills', 'achievement', 'targetRole', 'motivation'];
+            inputs.forEach(id => {
+                const element = document.getElementById(id);
+                element.addEventListener('input', updatePreview);
+            });
+            updatePreview();
+        });
+
+        function selectTemplate(templateName) {
+            currentTemplate = templateName;
+            
+            // Update button states
+            document.querySelectorAll('.template-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updatePreview();
+        }
+
+        function updatePreview() {
+            const data = {
+                name: document.getElementById('name').value || '[Your Name]',
+                currentRole: document.getElementById('currentRole').value || '[Your Current Role]',
+                experience: document.getElementById('experience').value || '[X years]',
+                company: document.getElementById('company').value || '[Company Name]',
+                skills: document.getElementById('skills').value || '[Your Key Skills]',
+                achievement: document.getElementById('achievement').value || '[Your Major Achievement]',
+                targetRole: document.getElementById('targetRole').value || '[Target Position]',
+                motivation: document.getElementById('motivation').value || '[Your Motivation]'
+            };
+
+            let introduction = templates[currentTemplate].structure;
+            
+            // Replace placeholders with actual data
+            introduction = introduction
+                .replace(/\[NAME\]/g, data.name)
+                .replace(/\[CURRENT_ROLE\]/g, data.currentRole)
+                .replace(/\[EXPERIENCE\]/g, data.experience)
+                .replace(/\[COMPANY\]/g, data.company)
+                .replace(/\[SKILLS\]/g, data.skills)
+                .replace(/\[ACHIEVEMENT\]/g, data.achievement)
+                .replace(/\[TARGET_ROLE\]/g, data.targetRole)
+                .replace(/\[MOTIVATION\]/g, data.motivation)
+                .replace(/\[FIELD\]/g, extractField(data.currentRole))
+                .replace(/\[STORY_START\]/g, 'I discovered my passion for this field')
+                .replace(/\[GROWTH\]/g, 'continuously improve and take on new challenges');
+
+            const previewElement = document.getElementById('introPreview');
+            
+            // Check if any fields are filled
+            const hasContent = Object.values(data).some(value => 
+                value !== '' && !value.startsWith('[') && !value.endsWith(']')
+            );
+
+            if (hasContent) {
+                previewElement.innerHTML = introduction;
+                previewElement.classList.remove('placeholder-text');
+            } else {
+                previewElement.innerHTML = '<div class="placeholder-text">Fill in your details on the left to see your personalized self-introduction here...</div>';
+            }
+        }
+
+        function extractField(role) {
+            if (role.toLowerCase().includes('developer') || role.toLowerCase().includes('engineer')) {
+                return 'technology';
+            } else if (role.toLowerCase().includes('marketing')) {
+                return 'marketing';
+            } else if (role.toLowerCase().includes('sales')) {
+                return 'sales';
+            } else if (role.toLowerCase().includes('design')) {
+                return 'design';
+            } else {
+                return 'this field';
+            }
+        }
+
+        function copyToClipboard() {
+            const previewText = document.getElementById('introPreview').textContent;
+            
+            if (previewText.includes('Fill in your details')) {
+                alert('Please fill in your details first to generate your introduction.');
+                return;
+            }
+
+            navigator.clipboard.writeText(previewText).then(function() {
+                // Show success feedback
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            }).catch(function() {
+                alert('Could not copy to clipboard. Please select and copy the text manually.');
+            });
+        }
+
+        function startPracticeTimer() {
+            const timerSection = document.getElementById('timerSection');
+            timerSection.style.display = 'block';
+            timerSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function startTimer() {
+            if (practiceTimer) {
+                clearInterval(practiceTimer);
+            }
+            
+            seconds = 0;
+            document.getElementById('timerFeedback').textContent = 'Timer started! Begin reading your introduction.';
+            document.getElementById('timerFeedback').style.color = '#28a745';
+            
+            practiceTimer = setInterval(() => {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                document.getElementById('timerDisplay').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                
+                // Provide timing feedback
+                if (seconds === 60) {
+                    document.getElementById('timerFeedback').textContent = '1 minute - Perfect timing for most interviews!';
+                    document.getElementById('timerFeedback').style.color = '#28a745';
+                } else if (seconds === 90) {
+                    document.getElementById('timerFeedback').textContent = '90 seconds - Still good, but consider wrapping up.';
+                    document.getElementById('timerFeedback').style.color = '#ffc107';
+                } else if (seconds === 120) {
+                    document.getElementById('timerFeedback').textContent = '2 minutes - Too long! Try to be more concise.';
+                    document.getElementById('timerFeedback').style.color = '#dc3545';
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (practiceTimer) {
+                clearInterval(practiceTimer);
+                practiceTimer = null;
+                
+                let feedback = '';
+                let color = '';
+                
+                if (seconds < 30) {
+                    feedback = `${seconds} seconds - Too short! Add more details about your experience.`;
+                    color = '#dc3545';
+                } else if (seconds <= 60) {
+                    feedback = `${seconds} seconds - Perfect timing! Great job!`;
+                    color = '#28a745';
+                } else if (seconds <= 90) {
+                    feedback = `${seconds} seconds - Good timing, but try to be a bit more concise.`;
+                    color = '#ffc107';
+                } else {
+                    feedback = `${seconds} seconds - Too long! Practice condensing your key points.`;
+                    color = '#dc3545';
+                }
+                
+                document.getElementById('timerFeedback').textContent = feedback;
+                document.getElementById('timerFeedback').style.color = color;
+            }
+        }
+
+        function resetTimer() {
+            if (practiceTimer) {
+                clearInterval(practiceTimer);
+                practiceTimer = null;
+            }
+            seconds = 0;
+            document.getElementById('timerDisplay').textContent = '00:00';
+            document.getElementById('timerFeedback').textContent = '';
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98c82d8d330f444f',t:'MTc2MDEyMDkxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
